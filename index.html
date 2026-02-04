@@ -11,19 +11,34 @@
             box-sizing: border-box;
         }
 
-        body {
+        body{
             font-family: 'Georgia', serif;
-            background: 
-                linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)),
-                url('https://images.unsplash.com/photo-1581595219315-a187dd40c322?q=80&w=1600&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
             overflow-x: hidden;
+            position: relative; /* important for side layers */
+        }
+
+        /* Side background image (left only) */
+        body::before{
+            content: "";
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: min(340px, 26vw);   /* adjust width as needed */
+            background-image: url("marsan.png"); /* same folder as index.html */
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;  /* avoid cropping */
+            opacity: 0.35;             /* make it more visible */
+            filter: blur(0);           /* set to 0 to keep it sharp */
+            z-index: 0;
+            pointer-events: none;
         }
 
         .hearts {
