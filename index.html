@@ -23,26 +23,7 @@
             position: relative; /* important for side layers */
         }
 
-        /* Side background images */
-        body::before{
-            content: "";
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            width: min(340px, 26vw);   /* adjust width as needed */
-            background-image: url("./marsan.png"); /* relative to index.html */
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain;  /* avoid cropping */
-            opacity: 1;                /* keep fully visible */
-            filter: none;              /* no blur so it stands out */
-            mix-blend-mode: normal;    /* prevent blending into gradient */
-            box-shadow: inset 0 0 80px rgba(0,0,0,0.15); /* subtle framing */
-            z-index: 0;
-            pointer-events: none;
-        }
-
+        /* Side background image (right only) */
         body::after{
             content: "";
             position: fixed;
@@ -280,7 +261,6 @@
             }
 
             /* Hide side backgrounds on mobile and show inline images */
-            body::before,
             body::after{
                 display: none;
             }
@@ -309,7 +289,6 @@
 
         <div class="appreciation-list">
             <h2>Things I Should Have Thanked You For</h2>
-            <img src="./marsan.png" alt="Marsan" class="mobile-image">
 
             <div class="appreciation-item">
                 <div class="icon">💆‍♀️</div>
