@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: 
+                linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)),
+                url('https://images.unsplash.com/photo-1581595219315-a187dd40c322?q=80&w=1600&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0;
+            animation: float 6s infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(6px);
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #764ba2;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+
+        .header .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            font-style: italic;
+        }
+
+        .message {
+            color: #444;
+            font-size: 1.15em;
+            line-height: 1.8;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .message p {
+            margin-bottom: 20px;
+        }
+
+        .appreciation-list {
+            background: linear-gradient(135deg, #ffeef8 0%, #fff5f7 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 2px solid #ffcce0;
+        }
+
+        .appreciation-list h2 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .appreciation-item {
+            background: white;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .appreciation-item:hover {
+            transform: translateX(10px);
+        }
+
+        .appreciation-item .icon {
+            font-size: 2em;
+            flex-shrink: 0;
+        }
+
+        .appreciation-item .text {
+            text-align: left;
+            color: #555;
+        }
+
+        .apology-box {
+            background: linear-gradient(135deg, #fff9e6 0%, #ffe6f0 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            border: 2px dashed #ffa8c5;
+        }
+
+        .apology-box p {
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .invitation {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            margin: 30px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .invitation::before {
+            content: '✨';
+            position: absolute;
+            font-size: 100px;
+            opacity: 0.1;
+            top: -20px;
+            right: -20px;
+        }
+
+        .invitation h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .invitation p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+
+        .button {
+            display: inline-block;
+            background: white;
+            color: #764ba2;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer {
+            margin-top: 40px;
+            color: #888;
+            font-size: 0.95em;
+        }
+
+        .signature {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 2em;
+            color: #764ba2;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .message {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>For My Beautiful Girl ❤️</h1>
+            <p class="subtitle">A message from my heart</p>
+        </div>
+
+        <div class="message">
+            <p>Hey Marsan,</p>
+            <p>I needed to create something special to tell you how truly sorry I am. I realize now that I didn't appreciate everything you did for me, and that was completely wrong of me.</p>
+            <p>I know you are at the hospital right now saving babies' lives, and that is incredible. During your busy work, if you had time to check this out, I really appreciate that.</p>
+        </div>
+
+        <div class="appreciation-list">
+            <h2>Things I Should Have Thanked You For</h2>
+
+            <div class="appreciation-item">
+                <div class="icon">💆‍♀️</div>
+                <div class="text">
+                    <strong>Your waxing appointment</strong><br>
+                    You took time out of your day to look beautiful, and I didn't acknowledge it
+                </div>
+            </div>
+
+            <div class="appreciation-item">
+                <div class="icon">🛒</div>
+                <div class="text">
+                    <strong>Going grocery shopping</strong><br>
+                    You went out and got everything we needed, thinking of us. Thank you for choosing meat that doesn't make me sick
+                </div>
+            </div>
+
+            <div class="appreciation-item">
+                <div class="icon">🍝</div>
+                <div class="text">
+                    <strong>Making that incredible pasta</strong><br>
+                    It was the first proper meal I've had in so long, and it was perfect
+                </div>
+            </div>
+
+            <div class="appreciation-item">
+                <div class="icon">⏰</div>
+                <div class="text">
+                    <strong>Your most valuable time</strong><br>
+                    You could have other important things to do, but you chose to spend your time with me
+                </div>
+            </div>
+        </div>
+
+        <div class="apology-box">
+            <p><strong>I'm truly sorry</strong> for not handling the situation better. You put in so much effort, so much care, and I failed to recognize it in the moment. You deserve someone who notices every little thing you do, who appreciates you constantly, and who makes you feel valued - because you absolutely are.</p>
+            <p>I promise to do better. I promise to show you how much I appreciate everything you do for us.</p>
+        </div>
+
+        <div class="invitation">
+            <h2>Let Me Make It Up To You ✨</h2>
+            <p>I will take you to a spa (your choice), Marsan, and while you are in your spa I will be waiting and thinking about the mistakes I made.</p>
+            <a href="#" class="button" onclick="showResponse(); return false;">Yes, let's do it! 💕</a>
+        </div>
+
+        <div class="signature">
+            Your guy who's really sorry ❤️
+        </div>
+
+        <div class="footer" id="response" style="display: none;">
+            <p style="color: #764ba2; font-size: 1.3em; font-weight: bold; margin-top: 20px;">
+                Thank you for giving me another chance. I will be waiting for your reply 🥰
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            document.getElementById('hearts').appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        setInterval(createHeart, 800);
+
+        function showResponse() {
+            document.getElementById('response').style.display = 'block';
+            document.getElementById('response').scrollIntoView({ behavior: 'smooth' });
+
+            // Create confetti effect
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = ['❤️', '💕', '💖', '💗', '💝'][Math.floor(Math.random() * 5)];
+                    heart.style.position = 'fixed';
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.top = '50%';
+                    heart.style.fontSize = '30px';
+                    heart.style.zIndex = '1000';
+                    heart.style.animation = 'float 2s ease-out forwards';
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 2000);
+                }, i * 50);
+            }
+        }
+    </script>
+</body>
+</html>
