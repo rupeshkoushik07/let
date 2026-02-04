@@ -1,413 +1,332 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For You ❤️</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For You ❤️</title>
+  <style>
+    :root {
+      --bg-start: #667eea;
+      --bg-end: #764ba2;
+      --accent: #ff5aa5;
+      --soft-pink: #ffc3dd;
+      --text-main: rgba(34, 34, 34, 0.9);
+    }
 
-        body{
-            font-family: 'Georgia', serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            overflow-x: hidden;
-            position: relative; /* important for side layers */
-        }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* Side background image (right only) */
-        body::after{
-            content: "";
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            right: 0;
-            width: min(340px, 26vw);
-            background-image: url("./doc.png"); /* right side image */
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain;
-            opacity: 1;
-            filter: none;
-            mix-blend-mode: normal;
-            box-shadow: inset 0 0 80px rgba(0,0,0,0.15);
-            z-index: 0;
-            pointer-events: none;
-        }
+    body {
+      font-family: 'Georgia', serif;
+      background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      overflow-x: hidden;
+      position: relative;
+      color: var(--text-main);
+    }
 
-        .hearts {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
+    /* Side image panels */
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      top: 0; bottom: 0;
+      width: min(340px, 26vw);
+      background: center / contain no-repeat url("./doc.png");
+      opacity: 0.55;
+      filter: drop-shadow(0 15px 25px rgba(0,0,0,0.18));
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::before { left: 0; }
+    body::after  { right: 0; }
 
-        .heart {
-            position: absolute;
-            font-size: 20px;
-            opacity: 0;
-            animation: float 6s infinite;
-        }
+    /* Soft veil overlay */
+    .side-veil {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.25), transparent 45%),
+                  radial-gradient(circle at 80% 30%, rgba(255,192,218,0.25), transparent 45%),
+                  rgba(255,255,255,0.08);
+      z-index: 0;
+      pointer-events: none;
+    }
 
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
+    /* Hearts layer */
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .heart {
+      position: absolute;
+      font-size: 20px;
+      opacity: 0;
+      animation: float 6s infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+    }
 
-        .container {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(6px);
-            border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 600px;
-            width: 100%;
-            padding: 50px 40px;
-            text-align: center;
-            position: relative;
-            z-index: 2;
-            animation: slideIn 0.8s ease-out;
-        }
+    /* Main glass card */
+    .container {
+      position: relative;
+      z-index: 2;
+      max-width: 640px;
+      width: 100%;
+      padding: 52px 42px;
+      text-align: center;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px);
+      border-radius: 34px;
+      box-shadow:
+        0 25px 70px rgba(0,0,0,0.25),
+        0 10px 30px rgba(0,0,0,0.12);
+      overflow: hidden;
+      animation: slideIn 0.8s ease-out;
+    }
+    .container::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 34px;
+      background: linear-gradient(135deg, rgba(255,90,165,0.6), rgba(118,75,162,0.5), rgba(102,126,234,0.5));
+      z-index: -1;
+      mask: linear-gradient(#000, #000) content-box, linear-gradient(#000, #000);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      padding: 2px;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(50px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .header { margin-bottom: 30px; }
+    .header h1 { color: #764ba2; font-size: 2.6em; letter-spacing: 0.5px; margin-bottom: 10px; font-weight: 500; }
+    .header .subtitle { color: rgba(68,68,68,0.85); font-size: 1.12em; font-style: italic; }
 
-        .header {
-            margin-bottom: 30px;
-        }
+    .message {
+      color: #444;
+      font-size: 1.12em;
+      line-height: 1.8;
+      margin: 30px 0;
+      text-align: left;
+    }
+    .message p { margin-bottom: 20px; }
 
-        .header h1 {
-            color: #764ba2;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: normal;
-        }
+    .inline-doc{
+      display: block;
+      max-width: 260px;
+      width: 100%;
+      margin: 18px auto;
+      object-fit: contain;
+      border-radius: 20px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.16);
+    }
 
-        .header .subtitle {
-            color: #666;
-            font-size: 1.1em;
-            font-style: italic;
-        }
+    .appreciation-list {
+      background: linear-gradient(135deg, #ffeef8 0%, #fff5f7 100%);
+      border-radius: 22px;
+      padding: 30px;
+      margin: 30px 0;
+      border: 2px solid #ffcce0;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+    }
+    .appreciation-list h2 {
+      color: #764ba2;
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      letter-spacing: 0.3px;
+    }
+    .appreciation-item {
+      background: #fff;
+      padding: 15px 20px;
+      margin: 15px 0;
+      border-radius: 15px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border: 1px solid rgba(255,204,224,0.6);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .appreciation-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 18px rgba(0,0,0,0.12);
+    }
+    .appreciation-item .icon { font-size: 1.9em; flex-shrink: 0; }
+    .appreciation-item .text { text-align: left; color: #555; }
 
-        .message {
-            color: #444;
-            font-size: 1.15em;
-            line-height: 1.8;
-            margin: 30px 0;
-            text-align: left;
-        }
+    .apology-box {
+      background: linear-gradient(135deg, #fff9e6 0%, #ffe6f0 100%);
+      border-radius: 20px;
+      padding: 30px;
+      margin: 30px 0;
+      border: 2px dashed #ffa8c5;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.08);
+    }
+    .apology-box p { color: #555; font-size: 1.08em; line-height: 1.8; }
 
-        .message p {
-            margin-bottom: 20px;
-        }
+    .invitation {
+      background: linear-gradient(135deg, #ff5aa5 0%, #764ba2 50%, #667eea 100%);
+      color: white;
+      padding: 42px 32px;
+      border-radius: 22px;
+      margin: 30px 0;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(118,75,162,0.35);
+    }
+    .invitation::before {
+      content: '✨';
+      position: absolute;
+      font-size: 110px;
+      opacity: 0.12;
+      top: -25px;
+      right: -15px;
+    }
+    .invitation h2 { font-size: 1.8em; margin-bottom: 15px; letter-spacing: 0.3px; }
+    .invitation p { font-size: 1.18em; line-height: 1.6; }
 
-        .appreciation-list {
-            background: linear-gradient(135deg, #ffeef8 0%, #fff5f7 100%);
-            border-radius: 20px;
-            padding: 30px;
-            margin: 30px 0;
-            border: 2px solid #ffcce0;
-        }
+    .button {
+      display: inline-block;
+      background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.75));
+      color: #764ba2;
+      padding: 14px 38px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.05em;
+      margin-top: 20px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+      border: 1px solid rgba(255,255,255,0.7);
+      backdrop-filter: blur(6px);
+    }
+    .button:hover { transform: translateY(-3px); box-shadow: 0 12px 26px rgba(0,0,0,0.24); }
 
-        .appreciation-list h2 {
-            color: #764ba2;
-            font-size: 1.5em;
-            margin-bottom: 20px;
-        }
+    .footer { margin-top: 40px; color: #888; font-size: 0.95em; }
+    .signature { font-family: 'Brush Script MT', cursive; font-size: 2em; color: #764ba2; margin-top: 20px; }
 
-        /* Mobile-only inline images */
-        .mobile-image{
-            display: none;
-            width: 100%;
-            max-width: 320px;
-            margin: 16px auto;
-            object-fit: contain;
-        }
-
-        .appreciation-item {
-            background: white;
-            padding: 15px 20px;
-            margin: 15px 0;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: transform 0.3s ease;
-        }
-
-        .appreciation-item:hover {
-            transform: translateX(10px);
-        }
-
-        .appreciation-item .icon {
-            font-size: 2em;
-            flex-shrink: 0;
-        }
-
-        .appreciation-item .text {
-            text-align: left;
-            color: #555;
-        }
-
-        .apology-box {
-            background: linear-gradient(135deg, #fff9e6 0%, #ffe6f0 100%);
-            border-radius: 20px;
-            padding: 30px;
-            margin: 30px 0;
-            border: 2px dashed #ffa8c5;
-        }
-
-        .apology-box p {
-            color: #555;
-            font-size: 1.1em;
-            line-height: 1.8;
-        }
-
-        .invitation {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px 30px;
-            border-radius: 20px;
-            margin: 30px 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .invitation::before {
-            content: '✨';
-            position: absolute;
-            font-size: 100px;
-            opacity: 0.1;
-            top: -20px;
-            right: -20px;
-        }
-
-        .invitation h2 {
-            font-size: 1.8em;
-            margin-bottom: 15px;
-        }
-
-        .invitation p {
-            font-size: 1.2em;
-            line-height: 1.6;
-        }
-
-        .button {
-            display: inline-block;
-            background: white;
-            color: #764ba2;
-            padding: 15px 40px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1em;
-            margin-top: 20px;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .footer {
-            margin-top: 40px;
-            color: #888;
-            font-size: 0.95em;
-        }
-
-        .signature {
-            font-family: 'Brush Script MT', cursive;
-            font-size: 2em;
-            color: #764ba2;
-            margin-top: 20px;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 30px 20px;
-            }
-
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .message {
-                font-size: 1em;
-            }
-
-            /* Hide side backgrounds on mobile and show inline images */
-            body::after{
-                display: none;
-            }
-
-            .mobile-image{
-                display: block;
-            }
-        }
-    </style>
+    @media (max-width: 600px) {
+      .container { padding: 32px 22px; }
+      .header h1 { font-size: 2.1em; }
+      body::before, body::after { display: none; }
+      .inline-doc { max-width: 220px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="hearts" id="hearts"></div>
+  <div class="side-veil"></div>
+  <div class="hearts" id="hearts"></div>
 
-    <div class="container">
-        <div class="header">
-            <h1>For My Beautiful Girl ❤️</h1>
-            <p class="subtitle">A message from my heart</p>
-            <img src="./doc.png" alt="Doctor" class="mobile-image">
-        </div>
-
-        <div class="message">
-            <p>Hey Marsan,</p>
-            <p>I needed to create something special to tell you how truly sorry I am. I realize now that I didn't appreciate everything you did for me, and that was completely wrong of me.</p>
-            <p>I know you are at the hospital right now saving babies' lives, and that is incredible. During your busy work, if you had time to check this out, I really appreciate that.</p>
-        </div>
-
-        <div class="appreciation-list">
-            <h2>Things I Should Have Thanked You For</h2>
-
-            <div class="appreciation-item">
-                <div class="icon">💆‍♀️</div>
-                <div class="text">
-                    <strong>Your waxing appointment</strong><br>
-                    You took time out of your day to look beautiful, and I didn't acknowledge it
-                </div>
-            </div>
-
-            <div class="appreciation-item">
-                <div class="icon">🛒</div>
-                <div class="text">
-                    <strong>Going grocery shopping</strong><br>
-                    You went out and got everything we needed, thinking of us. Thank you for choosing meat that doesn't make me sick
-                </div>
-            </div>
-
-            <div class="appreciation-item">
-                <div class="icon">🍝</div>
-                <div class="text">
-                    <strong>Making that incredible pasta</strong><br>
-                    It was the first proper meal I've had in so long, and it was perfect
-                </div>
-            </div>
-
-            <div class="appreciation-item">
-                <div class="icon">⏰</div>
-                <div class="text">
-                    <strong>Your most valuable time</strong><br>
-                    You could have other important things to do, but you chose to spend your time with me
-                </div>
-            </div>
-        </div>
-
-        <div class="apology-box">
-            <p><strong>I'm truly sorry</strong> for not handling the situation better. You put in so much effort, so much care, and I failed to recognize it in the moment. You deserve someone who notices every little thing you do, who appreciates you constantly, and who makes you feel valued - because you absolutely are.</p>
-            <p>I promise to do better. I promise to show you how much I appreciate everything you do for us.</p>
-        </div>
-
-        <div class="invitation">
-            <h2>Let Me Make It Up To You ✨</h2>
-            <p>I will take you to a spa (your choice), Marsan, and while you are in your spa I will be waiting and thinking about the mistakes I made.</p>
-            <a href="#" class="button" onclick="showResponse(); return false;">Yes, let's do it! 💕</a>
-        </div>
-
-        <div class="appreciation-list">
-            <h2>Next Plans</h2>
-            <div class="appreciation-item">
-                <div class="icon">💪</div>
-                <div class="text">
-                    <strong>Gym date</strong><br>
-                    Let's sweat it out together and cheer each other on.
-                </div>
-            </div>
-            <div class="appreciation-item">
-                <div class="icon">🎉</div>
-                <div class="text">
-                    <strong>Socials</strong><br>
-                    Time to dance, laugh, and make some new memories.
-                </div>
-            </div>
-            <div class="appreciation-item">
-                <div class="icon">✨</div>
-                <div class="text">
-                    <strong>Surprise spot</strong><br>
-                    I have a fun place in mind—I'll let you know (buckle up for Saturday and Sunday).
-                </div>
-            </div>
-        </div>
-
-        <div class="signature">
-            Your guy who's really sorry ❤️
-        </div>
-
-        <div class="footer" id="response" style="display: none;">
-            <p style="color: #764ba2; font-size: 1.3em; font-weight: bold; margin-top: 20px;">
-                Thank you for giving me another chance. I will be waiting for your reply 🥰
-            </p>
-        </div>
+  <div class="container">
+    <div class="header">
+      <h1>For My Beautiful Girl ❤️</h1>
+      <p class="subtitle">A message from my heart</p>
     </div>
 
-    <script>
-        // Create floating hearts
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.className = 'heart';
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + '%';
-            heart.style.animationDelay = Math.random() * 5 + 's';
-            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
-            document.getElementById('hearts').appendChild(heart);
+    <div class="message">
+      <p>Hey Marsan,</p>
+      <p>I needed to create something special to tell you how truly sorry I am. I realize now that I didn't appreciate everything you did for me, and that was completely wrong of me.</p>
+      <p>I know you are at the hospital right now saving babies' lives, and that is incredible. During your busy work, if you had time to check this out, I really appreciate that.</p>
+      <img src="./doc.png" alt="Doctor" class="inline-doc" />
+    </div>
 
-            setTimeout(() => {
-                heart.remove();
-            }, 6000);
-        }
+    <div class="appreciation-list">
+      <h2>Things I Should Have Thanked You For</h2>
+      <div class="appreciation-item">
+        <div class="icon">💆‍♀️</div>
+        <div class="text"><strong>Your waxing appointment</strong><br>You took time out of your day to look beautiful, and I didn't acknowledge it.</div>
+      </div>
+      <div class="appreciation-item">
+        <div class="icon">🛒</div>
+        <div class="text"><strong>Going grocery shopping</strong><br>You went out and got everything we needed, thinking of us. Thank you for choosing meat that doesn't make me sick.</div>
+      </div>
+      <div class="appreciation-item">
+        <div class="icon">🍝</div>
+        <div class="text"><strong>Making that incredible pasta</strong><br>It was the first proper meal I've had in so long, and it was perfect.</div>
+      </div>
+      <div class="appreciation-item">
+        <div class="icon">⏰</div>
+        <div class="text"><strong>Your most valuable time</strong><br>You could have other important things to do, but you chose to spend your time with me.</div>
+      </div>
+    </div>
 
-        setInterval(createHeart, 800);
+    <div class="apology-box">
+      <p><strong>I'm truly sorry</strong> for not handling the situation better. You put in so much effort, so much care, and I failed to recognize it in the moment. You deserve someone who notices every little thing you do, who appreciates you constantly, and who makes you feel valued - because you absolutely are.</p>
+      <p>I promise to do better. I promise to show you how much I appreciate everything you do for us.</p>
+    </div>
 
-        function showResponse() {
-            document.getElementById('response').style.display = 'block';
-            document.getElementById('response').scrollIntoView({ behavior: 'smooth' });
+    <div class="invitation">
+      <h2>Let Me Make It Up To You ✨</h2>
+      <p>I will take you to a spa (your choice), Marsan, and while you are in your spa I will be waiting and thinking about the mistakes I made.</p>
+      <a href="#" class="button" onclick="showResponse(); return false;">Yes, let's do it! 💕</a>
+    </div>
 
-            // Create confetti effect
-            for (let i = 0; i < 30; i++) {
-                setTimeout(() => {
-                    const heart = document.createElement('div');
-                    heart.innerHTML = ['❤️', '💕', '💖', '💗', '💝'][Math.floor(Math.random() * 5)];
-                    heart.style.position = 'fixed';
-                    heart.style.left = Math.random() * 100 + '%';
-                    heart.style.top = '50%';
-                    heart.style.fontSize = '30px';
-                    heart.style.zIndex = '1000';
-                    heart.style.animation = 'float 2s ease-out forwards';
-                    document.body.appendChild(heart);
-                    setTimeout(() => heart.remove(), 2000);
-                }, i * 50);
-            }
-        }
-    </script>
+    <div class="appreciation-list">
+      <h2>Next Plans</h2>
+      <div class="appreciation-item">
+        <div class="icon">💪</div>
+        <div class="text"><strong>Gym date</strong><br>Let's sweat it out together and cheer each other on.</div>
+      </div>
+      <div class="appreciation-item">
+        <div class="icon">🎉</div>
+        <div class="text"><strong>Socials</strong><br>Time to dance, laugh, and make some new memories.</div>
+      </div>
+      <div class="appreciation-item">
+        <div class="icon">✨</div>
+        <div class="text"><strong>Surprise spot</strong><br>I have a fun place in mind—I'll let you know (buckle up for Saturday and Sunday).</div>
+      </div>
+    </div>
+
+    <div class="signature">Your guy who's really sorry ❤️</div>
+
+    <div class="footer" id="response" style="display: none;">
+      <p style="color: #764ba2; font-size: 1.3em; font-weight: bold; margin-top: 20px;">
+        Thank you for giving me another chance. I will be waiting for your reply 🥰
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Floating hearts
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.innerHTML = '❤️';
+      heart.style.left = Math.random() * 100 + '%';
+      heart.style.animationDelay = Math.random() * 5 + 's';
+      heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+      document.getElementById('hearts').appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+    setInterval(createHeart, 800);
+
+    function showResponse() {
+      const el = document.getElementById('response');
+      el.style.display = 'block';
+      el.scrollIntoView({ behavior: 'smooth' });
+      for (let i = 0; i < 30; i++) {
+        setTimeout(() => {
+          const heart = document.createElement('div');
+          heart.innerHTML = ['❤️','💕','💖','💗','💝'][Math.floor(Math.random() * 5)];
+          heart.style.position = 'fixed';
+          heart.style.left = Math.random() * 100 + '%';
+          heart.style.top = '50%';
+          heart.style.fontSize = '30px';
+          heart.style.zIndex = '1000';
+          heart.style.animation = 'float 2s ease-out forwards';
+          document.body.appendChild(heart);
+          setTimeout(() => heart.remove(), 2000);
+        }, i * 50);
+      }
+    }
+  </script>
 </body>
 </html>
