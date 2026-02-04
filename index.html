@@ -156,6 +156,15 @@
             margin-bottom: 20px;
         }
 
+        /* Mobile-only inline images */
+        .mobile-image{
+            display: none;
+            width: 100%;
+            max-width: 320px;
+            margin: 16px auto;
+            object-fit: contain;
+        }
+
         .appreciation-item {
             background: white;
             padding: 15px 20px;
@@ -269,6 +278,16 @@
             .message {
                 font-size: 1em;
             }
+
+            /* Hide side backgrounds on mobile and show inline images */
+            body::before,
+            body::after{
+                display: none;
+            }
+
+            .mobile-image{
+                display: block;
+            }
         }
     </style>
 </head>
@@ -279,6 +298,7 @@
         <div class="header">
             <h1>For My Beautiful Girl ❤️</h1>
             <p class="subtitle">A message from my heart</p>
+            <img src="./doc.png" alt="Doctor" class="mobile-image">
         </div>
 
         <div class="message">
@@ -289,6 +309,7 @@
 
         <div class="appreciation-list">
             <h2>Things I Should Have Thanked You For</h2>
+            <img src="./marsan.png" alt="Marsan" class="mobile-image">
 
             <div class="appreciation-item">
                 <div class="icon">💆‍♀️</div>
